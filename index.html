@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Tzibush's Meet: signing in</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+         background: #0B1220; color: #E6EDF7; font-family: "Segoe UI", system-ui, sans-serif; text-align: center; }
+  .box { padding: 24px; max-width: 420px; }
+  h1 { margin: 0 0 8px; font-size: 26px; }
+  p { color: #C9D4E5; margin: 0 0 20px; }
+  a { display: inline-block; padding: 14px 22px; border-radius: 12px; background: #3B6FE0;
+      color: #FFFFFF; text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="title">Signing you in...</h1>
+  <p id="msg">Sending you back to Tzibush's Meet.</p>
+  <a id="go" href="#" hidden>Continue to Tzibush's Meet</a>
+</div>
+<script>
+  // Zoom only accepts https redirect addresses, so Zoom sends the sign-in here, and this page
+  // passes it to the app, which is listening on this same device at 127.0.0.1:47821.
+  // Nothing is stored or sent anywhere else.
+  (function () {
+    var q = window.location.search;
+    if (!q || (q.indexOf("code=") < 0 && q.indexOf("error") < 0)) {
+      document.getElementById("title").textContent = "Tzibush's Meet sign-in";
+      document.getElementById("msg").textContent = "Start sign-in from the app.";
+      return;
+    }
+    var target = "http://127.0.0.1:47821/oauth" + q;
+    var link = document.getElementById("go");
+    link.href = target;
+    link.hidden = false;
+    window.location.replace(target);
+  })();
+</script>
+</body>
+</html>
